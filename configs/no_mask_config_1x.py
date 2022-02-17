@@ -167,7 +167,7 @@ optimizer = dict(_delete_=True, type='AdamW', lr=0.0001, betas=(0.9, 0.999), wei
                                                  'relative_position_bias_table': dict(decay_mult=0.),
                                                  'norm': dict(decay_mult=0.)}))
 lr_config = dict(step=[27, 33])
-runner = dict(type='EpochBasedRunner', max_epochs=300)
+runner = dict(type='EpochBasedRunner', max_epochs=50)
 
 dataset_type = 'CocoDataset'
 classes = ('Background', 'Crack', 'Spallation', 'Efflorescence', 'ExposedBars', 'CorrosionStain')
@@ -198,4 +198,4 @@ data = dict(
         pipeline=test_pipeline))
 
 evaluation = dict(metric=['bbox'], classwise=True)
-checkpoint_config = dict(interval=50) # Saves checkpoint every 50 epoch
+checkpoint_config = dict(interval=10) # Saves checkpoint every 50 epoch
