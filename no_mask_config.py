@@ -1,10 +1,6 @@
 _base_ = [
     './_base_/models/cascade_mask_rcnn_swin_fpn.py',
-<<<<<<< HEAD
-    './_base_/schedules/schedule_2x.py', './_base_/default_runtime.py'
-=======
     './_base_/schedules/schedule_1x.py', './_base_/default_runtime.py'
->>>>>>> 4250c798cebcf1fcbaef9fbb1da3182efb8071dd
 ]
 
 model = dict(
@@ -121,25 +117,15 @@ train_pipeline = [
          policies=[
              [
                  dict(type='Resize',
-<<<<<<< HEAD
-                      img_scale=[(640, 1000), (672, 1000), (704, 1000),
-                                 (736, 1000), (768, 1000), (800, 1000),
-                                 (1000,1000)],
-=======
                       img_scale=[(480, 1333), (512, 1333), (544, 1333), (576, 1333),
                                  (608, 1333), (640, 1333), (672, 1333), (704, 1333),
                                  (736, 1333), (768, 1333), (800, 1333)],
->>>>>>> 4250c798cebcf1fcbaef9fbb1da3182efb8071dd
                       multiscale_mode='value',
                       keep_ratio=True)
              ],
              [
                  dict(type='Resize',
-<<<<<<< HEAD
-                      img_scale=[(400, 1000), (500, 1000), (600, 1000)],
-=======
                       img_scale=[(400, 1333), (500, 1333), (600, 1333)],
->>>>>>> 4250c798cebcf1fcbaef9fbb1da3182efb8071dd
                       multiscale_mode='value',
                       keep_ratio=True),
                  dict(type='RandomCrop',
@@ -147,16 +133,10 @@ train_pipeline = [
                       crop_size=(384, 600),
                       allow_negative_crop=True),
                  dict(type='Resize',
-<<<<<<< HEAD
-                      img_scale=[(640, 1000),
-                                 (672, 1000), (704, 1000), (736, 1000),
-                                 (768, 1000), (800, 1000), (1000,1000)],
-=======
                       img_scale=[(480, 1333), (512, 1333), (544, 1333),
                                  (576, 1333), (608, 1333), (640, 1333),
                                  (672, 1333), (704, 1333), (736, 1333),
                                  (768, 1333), (800, 1333)],
->>>>>>> 4250c798cebcf1fcbaef9fbb1da3182efb8071dd
                       multiscale_mode='value',
                       override=True,
                       keep_ratio=True)
@@ -194,13 +174,8 @@ dataset_type = 'CocoDataset'
 classes = ('Background', 'Crack', 'Spallation', 'Efflorescence', 'ExposedBars', 'CorrosionStain')
 data_root = 'data/codebrim_coco/'
 data = dict(
-<<<<<<< HEAD
-    samples_per_gpu=2,
-    workers_per_gpu=0,
-=======
     samples_per_gpu=1,
     workers_per_gpu=2,
->>>>>>> 4250c798cebcf1fcbaef9fbb1da3182efb8071dd
     train=dict(
         type=dataset_type,
         # explicitly add your class names to the field `classes`
@@ -222,10 +197,4 @@ data = dict(
         ann_file=data_root + 'annotations/codebrim_val.json',
         img_prefix=data_root + 'val/',
         pipeline=test_pipeline))
-<<<<<<< HEAD
 evaluation = dict(metric=['bbox'], classwise=True)
-
-checkpoint_config = dict(interval=5) # Saves checkpoint every 1 epoch
-=======
-evaluation = dict(metric=['bbox'], classwise=True)
->>>>>>> 4250c798cebcf1fcbaef9fbb1da3182efb8071dd
