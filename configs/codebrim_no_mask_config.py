@@ -6,7 +6,7 @@ classes = ('Background', 'Crack', 'Spallation', 'Efflorescence', 'ExposedBars', 
 data_root = 'data/codebrim_coco/'
 data = dict(
     samples_per_gpu=1,
-    workers_per_gpu=2,
+    workers_per_gpu=0,
     train=dict(
         type=dataset_type,
         # explicitly add your class names to the field `classes`
