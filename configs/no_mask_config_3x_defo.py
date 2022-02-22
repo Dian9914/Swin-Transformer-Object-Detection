@@ -169,7 +169,7 @@ optimizer = dict(_delete_=True, type='AdamW', lr=0.0001, betas=(0.9, 0.999), wei
 lr_config = dict(step=[27, 33])
 
 dataset_type = 'CocoDataset'
-classes = ('Defect')
+classes = ('Defect',)
 data_root = 'data/codebrim_coco_def/'
 data = dict(
     samples_per_gpu=2,
