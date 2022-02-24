@@ -42,7 +42,7 @@ model = dict(
                 conv_out_channels=256,
                 fc_out_channels=1024,
                 roi_feat_size=7,
-                num_classes=6,
+                num_classes=5,
                 bbox_coder=dict(
                     type='DeltaXYWHBBoxCoder',
                     target_means=[0., 0., 0., 0.],
@@ -60,7 +60,7 @@ model = dict(
                 conv_out_channels=256,
                 fc_out_channels=1024,
                 roi_feat_size=7,
-                num_classes=6,
+                num_classes=5,
                 bbox_coder=dict(
                     type='DeltaXYWHBBoxCoder',
                     target_means=[0., 0., 0., 0.],
@@ -78,7 +78,7 @@ model = dict(
                 conv_out_channels=256,
                 fc_out_channels=1024,
                 roi_feat_size=7,
-                num_classes=6,
+                num_classes=5,
                 bbox_coder=dict(
                     type='DeltaXYWHBBoxCoder',
                     target_means=[0., 0., 0., 0.],
@@ -117,15 +117,14 @@ train_pipeline = [
          policies=[
              [
                  dict(type='Resize',
-                      img_scale=[(640, 1000), (672, 1000), (704, 1000),
-                                 (736, 1000), (768, 1000), (800, 1000),
-                                 (1000,1000)],
+                      img_scale=[(640, 1333), (672, 1333), (704, 1333),
+                                 (736, 1333), (768, 1333), (800, 1333)],
                       multiscale_mode='value',
                       keep_ratio=True)
              ],
              [
                  dict(type='Resize',
-                      img_scale=[(400, 1000), (500, 1000), (600, 1000)],
+                      img_scale=[(400, 1333), (500, 1333), (600, 1333)],
                       multiscale_mode='value',
                       keep_ratio=True),
                  dict(type='RandomCrop',
@@ -133,9 +132,9 @@ train_pipeline = [
                       crop_size=(384, 600),
                       allow_negative_crop=True),
                  dict(type='Resize',
-                      img_scale=[(640, 1000),
-                                 (672, 1000), (704, 1000), (736, 1000),
-                                 (768, 1000), (800, 1000), (1000,1000)],
+                      img_scale=[(640, 1333),
+                                 (672, 1333), (704, 1333), (736, 1333),
+                                 (768, 1333), (800, 1333)],
                       multiscale_mode='value',
                       override=True,
                       keep_ratio=True)
@@ -169,7 +168,7 @@ optimizer = dict(_delete_=True, type='AdamW', lr=0.0001, betas=(0.9, 0.999), wei
 lr_config = dict(step=[27, 33])
 
 dataset_type = 'CocoDataset'
-classes = ('Background', 'Crack', 'Spallation', 'Efflorescence', 'ExposedBars', 'CorrosionStain')
+classes = ('Crack', 'Spallation', 'Efflorescence', 'ExposedBars', 'CorrosionStain')
 data_root = 'data/codebrim_coco/'
 data = dict(
     samples_per_gpu=2,
@@ -197,5 +196,5 @@ data = dict(
         pipeline=test_pipeline))
 
 evaluation = dict(metric=['bbox'], classwise=True)
-runner = dict(type='EpochBasedRunner', max_epochs=150)
-checkpoint_config = dict(interval=25) # Saves checkpoint every 50 epoch
+runner = dict(type='EpochBasedRunner', max_epochs=100)
+checkpoint_config = dict(interval=20) # Saves checkpoint every 50 epoch

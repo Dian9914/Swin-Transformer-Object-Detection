@@ -42,7 +42,7 @@ model = dict(
                 conv_out_channels=256,
                 fc_out_channels=1024,
                 roi_feat_size=7,
-                num_classes=1,
+                num_classes=7,
                 bbox_coder=dict(
                     type='DeltaXYWHBBoxCoder',
                     target_means=[0., 0., 0., 0.],
@@ -60,7 +60,7 @@ model = dict(
                 conv_out_channels=256,
                 fc_out_channels=1024,
                 roi_feat_size=7,
-                num_classes=1,
+                num_classes=7,
                 bbox_coder=dict(
                     type='DeltaXYWHBBoxCoder',
                     target_means=[0., 0., 0., 0.],
@@ -78,7 +78,7 @@ model = dict(
                 conv_out_channels=256,
                 fc_out_channels=1024,
                 roi_feat_size=7,
-                num_classes=1,
+                num_classes=7,
                 bbox_coder=dict(
                     type='DeltaXYWHBBoxCoder',
                     target_means=[0., 0., 0., 0.],
@@ -114,7 +114,7 @@ train_pipeline = [
     dict(type='LoadAnnotations', with_bbox=True, with_mask=False),
     dict(type='RandomFlip', flip_ratio=0.5),
     dict(type='AutoAugment',
-        policies=[
+         policies=[
              [
                  dict(type='Resize',
                       img_scale=[(640, 1333), (672, 1333), (704, 1333),
@@ -168,8 +168,8 @@ optimizer = dict(_delete_=True, type='AdamW', lr=0.0001, betas=(0.9, 0.999), wei
 lr_config = dict(step=[27, 33])
 
 dataset_type = 'CocoDataset'
-classes = ('Defect',)
-data_root = 'data/codebrim_coco_def/'
+classes = ('Crack', 'Spallation', 'Efflorescence', 'ExposedBars', 'CorrosionStain', 'SpallatedBars', 'CorrodedEfflorescence')
+data_root = 'data/codebrim_coco/'
 data = dict(
     samples_per_gpu=2,
     workers_per_gpu=0,
@@ -177,24 +177,24 @@ data = dict(
         type=dataset_type,
         # explicitly add your class names to the field `classes`
         classes=classes,
-        ann_file=data_root + 'annotations/codebrim_train.json',
+        ann_file=data_root + 'annotations/codebrim_train_7c.json',
         img_prefix=data_root + 'train/',
         pipeline=train_pipeline),
     val=dict(
         type=dataset_type,
         # explicitly add your class names to the field `classes`
         classes=classes,
-        ann_file=data_root + 'annotations/codebrim_val.json',
+        ann_file=data_root + 'annotations/codebrim_val_7c.json',
         img_prefix=data_root + 'val/',
         pipeline=test_pipeline),
     test=dict(
         type=dataset_type,
         # explicitly add your class names to the field `classes`
         classes=classes,
-        ann_file=data_root + 'annotations/codebrim_val.json',
+        ann_file=data_root + 'annotations/codebrim_val_7c.json',
         img_prefix=data_root + 'val/',
         pipeline=test_pipeline))
 
 evaluation = dict(metric=['bbox'], classwise=True)
 runner = dict(type='EpochBasedRunner', max_epochs=100)
-checkpoint_config = dict(interval=20) # Saves checkpoint every 10 epoch
+checkpoint_config = dict(interval=20) # Saves checkpoint every 50 epoch

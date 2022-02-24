@@ -37,6 +37,7 @@ for split in ['train','val']:
                                         for index in range(len(ann['annotations'])):
                                                 note = ann['annotations'][index]
                                                 if note['image_id']==id:
+                                                        print(note)
                                                         if keycode==115:
                                                                 del ann['annotations'][index]
                                                                 continue
@@ -82,18 +83,20 @@ for split in ['train','val']:
                                                                 area_a=ann['annotations'][index_a]['area']
                                                                 area_i=(end_point_i[0]-start_point_i[0])*((end_point_i[1]-start_point_i[1]))
 
+                                                                
+                                                                overlap=area_i/area
+                                                                print(overlap)
+                                                                overlap_a=area_i/area_a
+                                                                print(overlap_a)
+
                                                                 #si el rectangulo tiene el start point por debajo del end point o a su derecha
-                                                                #o el area es negativa, es que no intersectan
-                                                                if start_point_i[0]>end_point_i[0] or start_point_a[1]>end_point_i[1] or area_i<0:
+                                                                #o el area es negativa o el overlap sea mayor que 1, es que no intersectan
+                                                                if start_point_i[0]>end_point_i[0] or start_point_a[1]>end_point_i[1] or area_i<0 or overlap>1 or overlap_a>1:
                                                                         print('No intersection.')
                                                                         continue
 
                                                                 #si el rectangulo de interseccion tiene un area muy similar a alguna de las bboxes, es que esa bbox
                                                                 #esta practicamente contenida en la otra
-                                                                overlap=area_i/area
-                                                                print(overlap)
-                                                                overlap_a=area_i/area_a
-                                                                print(overlap_a)
 
                                                                 if overlap>=0.85:
                                                                         index2erase.append(index)
@@ -102,11 +105,12 @@ for split in ['train','val']:
                                                                 
                                                         bboxes.append(bbox)
                                                         indexes.append(index)
-
-                                        print(set(index2erase))
+                                        print('--------------------------')
                                         for index in reversed(list(set(index2erase))):
+                                                bbox=ann['annotations'][index]['bbox']
+                                                print(f'Deleting bbox {bbox} with index {index}...')
                                                 del ann['annotations'][index]
-
+                                        print('Press [space] to refresh.')
 
                                 except IndexError:
                                         pass
