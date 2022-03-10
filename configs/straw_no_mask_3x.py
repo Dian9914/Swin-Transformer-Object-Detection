@@ -1,6 +1,6 @@
 _base_ = [
-    '../_base_/models/cascade_mask_rcnn_swin_fpn.py',
-    '../_base_/schedules/schedule_2x.py', '../_base_/default_runtime.py']
+    './_base_/models/cascade_mask_rcnn_swin_fpn.py',
+    './_base_/schedules/schedule_2x.py', './_base_/default_runtime.py']
 
 
 model = dict(
@@ -117,14 +117,13 @@ train_pipeline = [
         policies=[
              [
                  dict(type='Resize',
-                      img_scale=[(640, 1333), (672, 1333), (704, 1333),
-                                 (736, 1333), (768, 1333), (800, 1333)],
+                      img_scale=[(736, 1333), (768, 1333), (800, 1333), (1000,1333)],
                       multiscale_mode='value',
                       keep_ratio=True)
              ],
              [
                  dict(type='Resize',
-                      img_scale=[(400, 1333), (500, 1333), (600, 1333)],
+                      img_scale=[(736, 1333), (768, 1333), (800, 1333), (1000,1333)],
                       multiscale_mode='value',
                       keep_ratio=True),
                  dict(type='RandomCrop',
@@ -132,9 +131,7 @@ train_pipeline = [
                       crop_size=(384, 600),
                       allow_negative_crop=True),
                  dict(type='Resize',
-                      img_scale=[(640, 1333),
-                                 (672, 1333), (704, 1333), (736, 1333),
-                                 (768, 1333), (800, 1333)],
+                      img_scale=[(736, 1333), (768, 1333), (800, 1333), (1000,1333)],
                       multiscale_mode='value',
                       override=True,
                       keep_ratio=True)
@@ -149,7 +146,7 @@ val_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(
         type='MultiScaleFlipAug',
-        img_scale=(1333, 800),
+        img_scale=(1333, 1000),
         flip=False,
         transforms=[
             dict(type='Resize', keep_ratio=True),
@@ -165,7 +162,7 @@ test_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(
         type='MultiScaleFlipAug',
-        img_scale=(1333, 800),
+        img_scale=(2500, 1600),
         flip=False,
         transforms=[
             dict(type='Resize', keep_ratio=True),
@@ -185,8 +182,8 @@ optimizer = dict(_delete_=True, type='AdamW', lr=0.0001, betas=(0.9, 0.999), wei
 lr_config = dict(step=[27, 33])
 
 dataset_type = 'CocoDataset'
-classes = ('strawberry',)
-data_root = 'data/strawberry/'
+classes = ('Defect',)
+data_root = 'data/codebrim_coco_def/'
 data = dict(
     samples_per_gpu=2,
     workers_per_gpu=0,
@@ -194,24 +191,24 @@ data = dict(
         type=dataset_type,
         # explicitly add your class names to the field `classes`
         classes=classes,
-        ann_file=data_root + 'annotations/strawberry_train.json',
+        ann_file=data_root + 'annotations/codebrim_train.json',
         img_prefix=data_root + 'train/',
         pipeline=train_pipeline),
     val=dict(
         type=dataset_type,
         # explicitly add your class names to the field `classes`
         classes=classes,
-        ann_file=data_root + 'annotations/strawberry_val.json',
+        ann_file=data_root + 'annotations/codebrim_val.json',
         img_prefix=data_root + 'val/',
         pipeline=val_pipeline),
     test=dict(
         type=dataset_type,
         # explicitly add your class names to the field `classes`
         classes=classes,
-        ann_file=data_root + 'annotations/strawberry_val.json',
+        ann_file=data_root + 'annotations/codebrim_val.json',
         img_prefix=data_root + 'val/',
         pipeline=test_pipeline))
 
 evaluation = dict(metric=['bbox'], classwise=True)
-runner = dict(type='EpochBasedRunner', max_epochs=200)
-checkpoint_config = dict(interval=40) # Saves checkpoint every interval epoch
+runner = dict(type='EpochBasedRunner', max_epochs=100)
+checkpoint_config = dict(interval=20) # Saves checkpoint every 10 epoch
