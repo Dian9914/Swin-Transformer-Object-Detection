@@ -1,24 +1,48 @@
-ARG PYTORCH="1.6.0"
-ARG CUDA="10.1"
-ARG CUDNN="7"
-
+ARG PYTORCH="1.10.0"
+ARG CUDA="11.3"
+ARG CUDNN="8"
 FROM pytorch/pytorch:${PYTORCH}-cuda${CUDA}-cudnn${CUDNN}-devel
 
-ENV TORCH_CUDA_ARCH_LIST="6.0 6.1 7.0+PTX"
-ENV TORCH_NVCC_FLAGS="-Xfatbin -compress-all"
-ENV CMAKE_PREFIX_PATH="$(dirname $(which conda))/../"
+ARG MMCV="1.3.17"
+ARG MMDET="2.20.0"
 
-RUN apt-get update && apt-get install -y ffmpeg libsm6 libxext6 git ninja-build libglib2.0-0 libsm6 libxrender-dev libxext6 \
-    && apt-get clean \
+ENV PYTHONUNBUFFERED TRUE
+
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
+    ca-certificates \
+    g++ \
+    openjdk-8-jdk \
+    wget \
+    # MMDet Requirements
+    ffmpeg libsm6 libxext6 git ninja-build libglib2.0-0 libsm6 libxrender-dev libxext6 \
     && rm -rf /var/lib/apt/lists/*
 
-# Install MMCV
-RUN pip install mmcv-full==latest+torch1.6.0+cu101 -f https://openmmlab.oss-accelerate.aliyuncs.com/mmcv/dist/index.html
+ENV PATH="/opt/conda/bin:$PATH"
+RUN export FORCE_CUDA=1
 
-# Install MMDetection
-RUN conda clean --all
-RUN git clone https://github.com/open-mmlab/mmdetection.git /mmdetection
-WORKDIR /mmdetection
-ENV FORCE_CUDA="1"
-RUN pip install -r requirements/build.txt
-RUN pip install --no-cache-dir -e .
+# TORCHSEVER
+RUN pip install torchserve torch-model-archiver
+
+# MMLAB
+ARG PYTORCH
+ARG CUDA
+RUN ["/bin/bash", "-c", "pip install mmcv-full==${MMCV} -f https://download.openmmlab.com/mmcv/dist/cu${CUDA//./}/torch${PYTORCH}/index.html"]
+RUN pip install mmdet==${MMDET}
+
+  
+
+RUN cd ~
+
+# MMDETECTION
+RUN git clone https://github.com/Dian9914/Swin-Transformer-Object-Detection.git mmdetection && \
+    cd mmdetection && \
+    pip install -r requirements/build.txt && \
+    pip install -v -e . && \
+    mkdir ./data
+
+# APEX
+RUN git clone https://github.com/NVIDIA/apex 
+
+
+    
