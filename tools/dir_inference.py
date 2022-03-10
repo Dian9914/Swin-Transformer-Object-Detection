@@ -54,9 +54,12 @@ def main():
 
         o_path=o_path_nodef
 
-        for defect in result[0]:
-            if defect[4]>=args.score_thr:
-                o_path=o_path_def
+
+        for defect_class in result:
+            for defect in defect_class:
+                if defect[4]>=args.score_thr:
+                    o_path=o_path_def
+                    print('defect')
 
         
         o_path=os.path.join(o_path, img_name)
