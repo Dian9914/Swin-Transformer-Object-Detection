@@ -186,7 +186,7 @@ lr_config = dict(step=[27, 33])
 
 dataset_type = 'CocoDataset'
 classes = ('Crack', 'Spallation', 'Efflorescence', 'ExposedBars', 'CorrosionStain')
-data_root = 'data/codebrim_coco/'
+data_root = '/workspace/output/codebrim_coco/'
 data = dict(
     samples_per_gpu=2,
     workers_per_gpu=0,
