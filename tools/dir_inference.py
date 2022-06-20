@@ -1,3 +1,5 @@
+# Realiza una inferencia a todas las imagenes de un directorio utilizando mmdetection. Te devuelve el resultado clasificado entre defecto y no defecto.
+
 import argparse
 
 import cv2

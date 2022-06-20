@@ -1,3 +1,5 @@
+#WIP
+
 from __future__ import annotations
 import cv2
 import json
@@ -7,7 +9,7 @@ import argparse
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Checks and fixes an entire dataset')
+    parser = argparse.ArgumentParser(description='Crops the cracks out of a dataset')
     parser.add_argument('dir', help='dataset directory')
     parser.add_argument('--auto', default= True, help ='Lets you go one image at a time')
     parser.add_argument('--out', default='./output/', help='Directory to save the output')
