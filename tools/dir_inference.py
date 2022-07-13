@@ -68,6 +68,7 @@ def main():
         o_path=o_path_nodef
         index = 0
         for defect_class in result:
+            if index==2: continue
             result_dict[f'{classes[index]}']=dict()
             defect_index = 0
             for defect in defect_class:
