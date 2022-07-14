@@ -10,7 +10,9 @@ def parse_args():
     parser.add_argument(
         '--out-dir', type=str, default='~/piloting/dataset/cropped/', help='output directory')
     parser.add_argument(
-        '--max-res', type=int, default=1500, help='max resolution for the crops')
+        '--max-height', type=int, default=1600, help='max resolution for the crops')
+    parser.add_argument(
+        '--max-width', type=int, default=2600, help='max resolution for the crops')
     parser.add_argument(
         '--manual', type=bool, default=False, help='enable preview')
     args = parser.parse_args()
@@ -32,17 +34,17 @@ def main():
         width,height=img.shape[0:2]
         print(width,height)
 
-        if width>args.max_res or height>args.max_res:
+        if width>args.max_width or height>args.max_height:
             print(f'Cropping image {img_name}...')
 
-            if width<args.max_res*2: tile_w_n=2
-            elif width<args.max_res*3: tile_w_n=3
+            if width<args.max_width*2: tile_w_n=2
+            elif width<args.max_width*3: tile_w_n=3
             else: tile_w_n=4
                 
             tile_width=floor(width/tile_w_n)
 
-            if height<args.max_res*2: tile_h_n=2
-            elif height<args.max_res*3: tile_h_n=3
+            if height<args.max_height*2: tile_h_n=2
+            elif height<args.max_height*3: tile_h_n=3
             else: tile_h_n=4
 
             tile_height=floor(height/tile_h_n)
