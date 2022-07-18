@@ -111,10 +111,10 @@ def main():
             elapsed_time=time.time()-start
             print(f'Processing time: {elapsed_time}, Inference time: {infer_time}')
             crop_counter = crop_counter + 1    
-            if row < n_rows: row = row + 1
+            if col < n_cols: col = col + 1
             else: 
-                col = col + 1
-                row = 1
+                row = row + 1
+                col = 1
         
         print('')
         img_counter = img_counter+1 

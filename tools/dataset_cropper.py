@@ -8,7 +8,7 @@ class Image_Cropper:
 
     def crop(self, img):
         crops = list()
-        height,width=img.shape[0:2]
+        width,height=img.shape[0:2]
 
         if width>self.max_width or height>self.max_height:
             print(f'Cropping image...')
@@ -29,10 +29,10 @@ class Image_Cropper:
             
             for index_w in range(tile_w_n):
                 for index_h in range(tile_h_n):
-                    crop = img[tile_height*index_h:tile_height*(index_h+1),tile_width*index_w:tile_width*(index_w+1)]
+                    crop = img[tile_width*index_w:tile_width*(index_w+1),tile_height*index_h:tile_height*(index_h+1)]
                     crops.append(crop)
                     
-            print(f'Image cropped in {tile_num} tiles! {tile_w_n}x{tile_h_n}')
+            print(f'Image cropped in {tile_num} tiles!')
 
         else:
             print(f'Image too small to be cropped')
