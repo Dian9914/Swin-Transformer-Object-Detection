@@ -186,7 +186,7 @@ lr_config = dict(step=[27, 33])
 
 dataset_type = 'CocoDataset'
 classes = ('Crack', 'Spallation', 'Efflorescence', 'ExposedBars', 'CorrosionStain')
-data_root = '/path/to/alora' #CAMBIAR
+data_root = '/workspace/output/alora/' #CAMBIAR
 data = dict(
     samples_per_gpu=2,
     workers_per_gpu=0,
@@ -213,5 +213,5 @@ data = dict(
         pipeline=test_pipeline))
 
 evaluation = dict(metric=['bbox'], classwise=True)
-runner = dict(type='EpochBasedRunner', max_epochs=100)
+runner = dict(type='EpochBasedRunner', max_epochs=200)
 checkpoint_config = dict(interval=10) # Saves checkpoint every 50 epoch

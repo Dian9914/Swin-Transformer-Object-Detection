@@ -1,48 +1,1 @@
-ARG PYTORCH="1.10.0"
-ARG CUDA="11.3"
-ARG CUDNN="8"
-FROM pytorch/pytorch:${PYTORCH}-cuda${CUDA}-cudnn${CUDNN}-devel
-
-ARG MMCV="1.3.17"
-ARG MMDET="2.20.0"
-
-ENV PYTHONUNBUFFERED TRUE
-
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
-    ca-certificates \
-    g++ \
-    openjdk-8-jdk \
-    wget \
-    # MMDet Requirements
-    ffmpeg libsm6 libxext6 git ninja-build libglib2.0-0 libsm6 libxrender-dev libxext6 \
-    && rm -rf /var/lib/apt/lists/*
-
-ENV PATH="/opt/conda/bin:$PATH"
-RUN export FORCE_CUDA=1
-
-# TORCHSEVER
-RUN pip install torchserve torch-model-archiver
-
-# MMLAB
-ARG PYTORCH
-ARG CUDA
-RUN ["/bin/bash", "-c", "pip install mmcv-full==${MMCV} -f https://download.openmmlab.com/mmcv/dist/cu${CUDA//./}/torch${PYTORCH}/index.html"]
-RUN pip install mmdet==${MMDET}
-
-  
-
-RUN cd ~
-
-# MMDETECTION
-RUN git clone https://github.com/Dian9914/Swin-Transformer-Object-Detection.git mmdetection && \
-    cd mmdetection && \
-    pip install -r requirements/build.txt && \
-    pip install -v -e . && \
-    mkdir ./data
-
-# APEX
-RUN git clone https://github.com/NVIDIA/apex 
-
-
-    
+s×È¡º«„¬¢{Ç½–Â¼˜Å¿›àÓ­õèÂöğÊÿüÖıÿ×ÿÿÙÿÿĞÉÉ–oa3Á³…‰~\“qØÓ¶ÏÊ­l`Ei]Bl^MpbQ{e²ˆÆ°–Æ°–¤•‹‚silkomlpWVVWVVXSOKFB@<5=92IJFLMIDKE>E?481592>?6>?631))'""!*).;::MQ<OS<LT5EM(+#& '!%,&&/(<E>BQP2A@-7:)36&./'(!)*$,-(33&11 (''& &$!'%#)'#)' !#*$'.('0)'0)##!''%++'--$*($*('*+7:;?MO>LN?MQBPT6>?"*+(("))#+(#/,'3227668<7X\Wv|z€†„ƒ|{xtul¨© ÉÆ¶}zjXI?TE;‚r¿³£‰|‹…xŒ‰{†ƒu}ugQI;2+%2+%/+,5126<>28:)044;?0:=&03#*.!(, &(#%!')#)+%+-'-/(0-(0-)2+(1*&2($0&",",#,!*&+*/!,3+7>6?LI.;8 ++&&'&#+*-:91>=.:<-9;-7:-7:-88-88.95+62/812;4092-6/,73(3/!,,!,,"*+"*+%+-*025;;6<<587032------,206<:/53!'%$"%+)*2/0856C@2?<'/,#+(#*"")! '$"  # )"(1*"-)!,(&1/)'##$**.2+592‹†e|wV°¦±§€‹|WvgBzg<zO|f?yc<ubIŒy`—Á»£¬¦Œ¹³™°¨°¨ÒÍ°×ÒµÇÄ¦ÉÆ¨ÉÆ¨ÄÁ£¶¶uqq]ZZFPJ=JD7D;(_VC‰Šdœwšq›rÉ¼–Ê½—•Šf¢—s¦ zÊÄ¾¾Ÿ——x–‡m´¥‹ŞÏ±ÿıßÿÿÛÿÿÛÿÿŞÿÿßøöÏõóÌÊÈ¡ÔÒ«ÖÛ½ÖÛ½ÒÖ¸ÌĞ²ÉÆ¦ÇÄ¤ÇÅ ŞÜ·ÒÊ¢¡™q‘„\¦™qÆÄ§¥~KF283//3--1-8C8CN>MZFUblˆnŠj‡ˆDab&24 ,.!$}ri×Ğ¯¹²‘œ›m›šl’Š^ˆ\È·Ã²‰¿°‰àÑªÜÒ©ÏÅœ˜“j ›rÒÏ¯Á¾ÏÏ°ããÄÙÖ¶ÔÑ±ØĞ¶ÌÄª›x¬Ÿ‰àÚÂİ×¿~€`MO/LTQOWTJZdK[eF\hDZfFWc0AM(-2!& ?EE=J
